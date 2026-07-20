@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Singenuity Prospecting Calendar</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; background: #f5f5f3; color: #1a1a18; line-height: 1.6; padding: 2rem 1rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 1.5rem; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .filter-btn { font-size: 12px; padding: 5px 14px; border-radius: 6px; border: 1px solid #ccc; background: white; cursor: pointer; color: #555; transition: all 0.15s; }
+  .filter-btn:hover { border-color: #888; color: #111; }
+  .filter-btn.active { background: #1a1a18; color: white; border-color: #1a1a18; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 1.2rem; font-size: 12px; color: #555; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  th { font-weight: 500; font-size: 11px; color: #888; text-align: left; padding: 10px 12px; border-bottom: 1px solid #eee; text-transform: uppercase; letter-spacing: 0.04em; background: white; }
+  td { padding: 9px 12px; border-bottom: 1px solid #f0f0ee; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #fafaf8; }
+  .section-header td { background: #f5f5f3; font-weight: 600; font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; padding: 7px 12px; border-bottom: 1px solid #eee; }
+  .star { color: #3B6D11; margin-left: 6px; font-style: normal; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+  .q1 { background: #E6F1FB; color: #0C447C; }
+  .q2 { background: #EAF3DE; color: #27500A; }
+  .q3 { background: #FAEEDA; color: #633806; }
+  .q4 { background: #FAECE7; color: #712B13; }
+  .all { background: #EEEDFE; color: #3C3489; }
+  .note { font-size: 11px; color: #888; margin-top: 2px; }
+  .cat-name { font-weight: 500; font-size: 13px; }
+  .farm-tag { display: inline-block; font-size: 10px; background: #EAF3DE; color: #27500A; border: 1px solid #97C459; border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+  .footer { margin-top: 2rem; font-size: 11px; color: #aaa; text-align: center; }
+  @media (max-width: 700px) {
+    table { font-size: 12px; }
+    th, td { padding: 7px 8px; }
+    h1 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Singenuity — Prospecting Calendar</h1>
+  <p class="subtitle">Best time to call by category · Focus: inland operators · Avoid calling during peak season</p>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterRows(this, '')">All categories</button>
+    <button class="filter-btn" onclick="filterRows(this, 'Q1')">Q1 — call now</button>
+    <button class="filter-btn" onclick="filterRows(this, 'Q2')">Q2</button>
+    <button class="filter-btn" onclick="filterRows(this, 'Q3')">Q3</button>
+    <button class="filter-btn" onclick="filterRows(this, 'Q4')">Q4</button>
+    <button class="filter-btn" onclick="filterRows(this, 'any')">Year-round</button>
+    <button class="filter-btn" onclick="filterRows(this, 'farm')">★ Farm focus</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#B5D4F4"></div> Q1 (Jan–Mar)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#C0DD97"></div> Q2 (Apr–Jun)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FAC775"></div> Q3 (Jul–Sep)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F5C4B3"></div> Q4 (Oct–Dec)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#CECBF6"></div> Year-round</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:23%">Category</th>
+        <th style="width:14%">Best time to call</th>
+        <th style="width:20%">Their peak (avoid)</th>
+        <th>Why Singenuity fits / notes</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+
+      <tr class="section-header"><td colspan="4">Agritainment &amp; farm experiences <span class="star">★ your passion area</span></td></tr>
+      <tr data-q="Q1" data-farm="true">
+        <td><div class="cat-name">Corn mazes <span class="farm-tag">farm</span></div><div class="note">Inland, rural midwest/southeast</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Sep – Nov (fall peak)</td>
+        <td>Online pre-sale + day-of gate POS is exactly the split they deal with. Priority booking fills timed entry slots. Cash flow matters hugely for small family farms.</td>
+      </tr>
+      <tr data-q="Q2" data-farm="true">
+        <td><div class="cat-name">U-pick farms <span class="farm-tag">farm</span></div><div class="note">Strawberry, blueberry, peach, apple</div></td>
+        <td><span class="badge q2">Q2</span></td>
+        <td>Jun – Oct (crop-dependent)</td>
+        <td>Timed entry + add-on sales (jam, cider, merchandise) = perfect POS + booking combo. Many still on pen-and-paper or Square alone.</td>
+      </tr>
+      <tr data-q="Q1" data-farm="true">
+        <td><div class="cat-name">Agritourism / farm tours <span class="farm-tag">farm</span></div><div class="note">Regenerative, organic, homestead-style</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Apr – Oct (planting/harvest)</td>
+        <td>CSA pickups, farm dinners, school tours — multi-event booking + retail POS for farm store. Deep dive candidate. Fast-growing, underserved by tech.</td>
+      </tr>
+      <tr data-q="Q2" data-farm="true">
+        <td><div class="cat-name">Lavender / flower farms <span class="farm-tag">farm</span></div><div class="note">Midwest, Pacific Northwest, Texas Hill Country</div></td>
+        <td><span class="badge q2">Q2</span></td>
+        <td>Jun – Aug (bloom season)</td>
+        <td>Sell tickets + sell bouquets/products in one system. Very few use real booking software — huge greenfield opportunity.</td>
+      </tr>
+      <tr data-q="Q1" data-farm="true">
+        <td><div class="cat-name">Pumpkin patches <span class="farm-tag">farm</span></div><div class="note">Often bundled with corn mazes</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Sep – Nov</td>
+        <td>Timed entry, hayride slots, gift shop POS. Talk to them in spring before they re-sign with anyone else. Same playbook as corn mazes.</td>
+      </tr>
+      <tr data-q="Q2" data-farm="true">
+        <td><div class="cat-name">Winery / vineyard tours <span class="farm-tag">farm</span></div><div class="note">Inland — VA, TX Hill Country, Finger Lakes, MO</div></td>
+        <td><span class="badge q2">Q2–Q3</span></td>
+        <td>Sep – Nov (harvest/crush)</td>
+        <td>Tasting room POS + tour booking is a real pain point. Many use Fareharbor but hate the cash flow delay. Merchant-of-record angle is very strong here.</td>
+      </tr>
+
+      <tr class="section-header"><td colspan="4">Outdoor adventure (inland)</td></tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Ziplines</div><div class="note">Appalachians, Ozarks, Smokies, Rockies</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>May – Sep (summer peak)</td>
+        <td>Singenuity was literally born at ClimbWorks (zipline). You can speak their language. Priority booking to fill lines before opening new slots = big staffing win.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Ropes courses / aerial parks</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>May – Sep</td>
+        <td>Same operational pain as ziplines. Waivers, timed slots, gift shop — needs combined POS + booking. Easy conversation starter with the ClimbWorks origin story.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Whitewater rafting / river guides</div><div class="note">Nantahala, Ocoee, Arkansas River, etc.</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>May – Aug</td>
+        <td>Slot-based tours + gear rental POS + photo/merch sales. Very ad-heavy operators — marketing attribution pitch is compelling for them.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Cavern / cave tours</div><div class="note">Missouri, Kentucky, Tennessee, Virginia</div></td>
+        <td><span class="badge q1">Q1</span></td>
+        <td>May – Sep (summer tourism)</td>
+        <td>Year-round ops but summer is slammed. Call NOW. Gift shop + timed tour tickets in one system. Often family-owned, underserved by tech.</td>
+      </tr>
+      <tr data-q="Q2">
+        <td><div class="cat-name">Rock climbing gyms / outdoor guides</div></td>
+        <td><span class="badge q2">Q2</span></td>
+        <td>Jun – Sep</td>
+        <td>Membership + day pass POS + guide booking. Priority booking to fill beginner slots. Understated but solid fit.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Horseback riding / trail rides</div><div class="note">Rural, inland — great Fareharbor competitor angle</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Apr – Oct</td>
+        <td>Often on Fareharbor but small enough to care about fee difference. Cash flow pitch is very strong. Usually no real POS at all — easy upgrade conversation.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">ATV / off-road tour operators</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Apr – Oct</td>
+        <td>Gear rental + tour booking combo. Often family-run, cash-heavy, no real software. Great greenfield. Midwest, Southeast, Southwest.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Hot air balloon operators</div><div class="note">Albuquerque, Midwest plains, Texas Hill Country</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Spring – fall (weather-dependent)</td>
+        <td>Slot-based, rescheduling-heavy. High-ticket experience operators spend a lot on ads — marketing attribution is a killer pitch. Champagne/gift POS adds up.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Hunting / fishing outfitters</div><div class="note">South, Midwest, Mountain West</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Fall hunting season + spring fishing opener</td>
+        <td>Multi-day trip booking + gear/license retail POS. Most on outdated systems or nothing. Strong cash flow and low-fee pitch. Very inland audience.</td>
+      </tr>
+      <tr data-q="Q1">
+        <td><div class="cat-name">Nature / wildlife tour guides</div><div class="note">Birding, wildflower, foliage tours</div></td>
+        <td><span class="badge q1">Q1–Q2</span></td>
+        <td>Spring – fall peak viewing seasons</td>
+        <td>Small passionate operators, very underserved by tech. Easy conversation. Booking + branded merchandise is simple but real pain point for them.</td>
+      </tr>
+      <tr data-q="Q2">
+        <td><div class="cat-name">Inland paddling / canoe / kayak outfitters</div><div class="note">Rivers and lakes — not coast</div></td>
+        <td><span class="badge q2">Q2</span></td>
+        <td>May – Sep</td>
+        <td>Rental POS + guided tour booking + shuttle logistics. Similar to your coast calls but inland. Different decision-makers, less rep competition.</td>
+      </tr>
+
+      <tr class="section-header"><td colspan="4">Cultural &amp; educational attractions</td></tr>
+      <tr data-q="any">
+        <td><div class="cat-name">Museums (small-to-mid size)</div><div class="note">Science, history, children's — inland cities</div></td>
+        <td><span class="badge all">Year-round</span></td>
+        <td>Summer + school breaks</td>
+        <td>Gift shop POS + timed entry + membership. Combined reporting is a major differentiator vs. their current patchwork systems.</td>
+      </tr>
+      <tr data-q="any">
+        <td><div class="cat-name">Aquariums (regional / inland)</div></td>
+        <td><span class="badge all">Year-round</span></td>
+        <td>Summer + school breaks</td>
+        <td>Same as museums but add programming/class bookings. Priority booking for limited-capacity events is key pitch.</td>
+      </tr>
+      <tr data-q="any">
+        <td><div class="cat-name">Escape rooms</div></td>
+        <td><span class="badge all">Year-round</span></td>
+        <td>Weekends + holidays (call weekday mornings)</td>
+        <td>Pure slot-based booking, often on generic software. Priority booking + marketing attribution is a slam dunk. Low seasonality = easy to reach anytime.</td>
+      </tr>
+      <tr data-q="any">
+        <td><div class="cat-name">Axe throwing / entertainment venues</div></td>
+        <td><span class="badge all">Year-round</span></td>
+        <td>Fri/Sat nights, holidays</td>
+        <td>Slot booking + bar/food POS. Very few use purpose-built tour software. Fast-growing segment, very receptive to better tools.</td>
+      </tr>
+      <tr data-q="any">
+        <td><div class="cat-name">Mini golf / putting courses</div><div class="note">Seasonal in north, year-round in south</div></td>
+        <td><span class="badge all">Year-round / Q1 north</span></td>
+        <td>May – Sep (north)</td>
+        <td>POS for snacks/merch + timed entry. Bayview Mini Putt is literally on your website — easy demo comparison to ClimbWorks booking flow.</td>
+      </tr>
+      <tr data-q="any">
+        <td><div class="cat-name">Indoor climbing gyms</div></td>
+        <td><span class="badge all">Year-round</span></td>
+        <td>No extreme seasonality</td>
+        <td>Day pass + membership + class booking + gear rental POS. Combined system is a real pain point for them right now.</td>
+      </tr>
+
+      <tr class="section-header"><td colspan="4">Holiday &amp; seasonal events</td></tr>
+      <tr data-q="Q3">
+        <td><div class="cat-name">Holiday light displays</div><div class="note">Botanical gardens, drive-throughs, walk-throughs</div></td>
+        <td><span class="badge q3">Q3 (Jul–Sep)</span></td>
+        <td>Nov – Jan</td>
+        <td>Timed entry + hot cocoa/merch POS = perfect pitch. Call in summer when they're planning. Often run by nonprofits or parks — very underserved.</td>
+      </tr>
+      <tr data-q="Q3">
+        <td><div class="cat-name">Haunted attractions / Halloween events</div></td>
+        <td><span class="badge q3">Q3 (Jul–Aug)</span></td>
+        <td>Sep – Nov</td>
+        <td>Slot-based timed entry, merchandise, add-ons. Priority booking to fill early slots first. Very ad-heavy — marketing attribution is a killer pitch.</td>
+      </tr>
+      <tr data-q="Q2">
+        <td><div class="cat-name">Renaissance fairs / festival operators</div></td>
+        <td><span class="badge q2">Q2</span></td>
+        <td>Varies — mostly spring/fall</td>
+        <td>Multi-day event booking + vendor/retail POS. Complex ops our system handles well. Often large enough to really care about reporting quality.</td>
+      </tr>
+
+      <tr class="section-header"><td colspan="4">Winter / cold weather (inland)</td></tr>
+      <tr data-q="Q2">
+        <td><div class="cat-name">Ski resorts / snow tubing parks</div><div class="note">Mid-size, not major resorts</div></td>
+        <td><span class="badge q2">Q2–Q3</span></td>
+        <td>Dec – Mar</td>
+        <td>Lift ticket POS + lesson booking + rental POS + lodge retail — massive combined-system pain point. Priority booking for lesson slots is very compelling.</td>
+      </tr>
+      <tr data-q="Q2">
+        <td><div class="cat-name">Dog sledding / snowmobile tours</div><div class="note">Minnesota, Michigan UP, Colorado, Wyoming</div></td>
+        <td><span class="badge q2">Q2–Q3</span></td>
+        <td>Dec – Mar</td>
+        <td>Small operators, often no real booking software. Tour slots + merch POS. Easy Fareharbor/pen-and-paper replacement conversation.</td>
+      </tr>
+      <tr data-q="Q2">
+        <td><div class="cat-name">Ice fishing guide services</div></td>
+        <td><span class="badge q2">Q2–Q3</span></td>
+        <td>Dec – Mar (ice season)</td>
+        <td>Booking + gear rental + bait/tackle POS. Very underserved. Probably on Venmo and paper right now. Strong cash flow pitch.</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="footer">Singenuity Prospecting Calendar · Generated for internal sales use · singenuity.com</div>
+</div>
+
+<script>
+function filterRows(btn, q) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('#table-body tr');
+  rows.forEach(row => {
+    if (row.classList.contains('section-header')) { row.style.display = ''; return; }
+    if (!q) { row.style.display = ''; return; }
+    if (q === 'farm') { row.style.display = row.dataset.farm ? '' : 'none'; return; }
+    if (q === 'any') { row.style.display = row.dataset.q === 'any' ? '' : 'none'; return; }
+    row.style.display = (row.dataset.q && row.dataset.q.includes(q)) ? '' : 'none';
+  });
+  document.querySelectorAll('.section-header').forEach(header => {
+    let next = header.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.classList.contains('section-header')) {
+      if (next.style.display !== 'none') hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    header.style.display = hasVisible ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
